@@ -1,0 +1,75 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-radar-bg text-radar-text font-sans antialiased;
+    min-height: 100vh;
+  }
+
+  ::selection {
+    background: #00aa5520;
+    color: #008844;
+  }
+
+  ::-webkit-scrollbar {
+    width: 6px;
+  }
+  ::-webkit-scrollbar-track {
+    background: #f5f5f5;
+  }
+  ::-webkit-scrollbar-thumb {
+    background: #d4d4d4;
+    border-radius: 3px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: #00aa55;
+  }
+}
+
+@layer components {
+  .radar-ring {
+    @apply rounded-full border border-radar-green/20;
+  }
+
+  .btn-primary {
+    @apply bg-radar-green text-radar-bg font-semibold px-5 py-2.5 rounded-lg
+           hover:bg-radar-dim transition-colors duration-200 text-sm;
+  }
+
+  .btn-ghost {
+    @apply border border-radar-border text-radar-text px-5 py-2.5 rounded-lg
+           hover:border-radar-green/50 hover:text-radar-green transition-colors duration-200 text-sm;
+  }
+
+  .pill {
+    @apply inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-medium
+           border border-radar-border text-radar-muted cursor-pointer
+           hover:border-radar-green/40 hover:text-radar-green transition-all duration-150;
+  }
+
+  .pill-active {
+    @apply border-radar-green text-radar-green bg-radar-green/10;
+  }
+
+  .card {
+    @apply bg-radar-card border border-radar-border rounded-xl overflow-hidden shadow-sm
+           hover:border-radar-green/50 hover:shadow-md transition-all duration-200;
+  }
+
+  .input {
+    @apply bg-radar-surface border border-radar-border rounded-lg px-4 py-2.5 text-sm
+           text-radar-text placeholder:text-radar-muted focus:outline-none
+           focus:border-radar-green/50 focus:ring-1 focus:ring-radar-green/20
+           transition-colors duration-150;
+  }
+}
