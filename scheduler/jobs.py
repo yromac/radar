@@ -1,12 +1,12 @@
 """APScheduler job definitions for Radar.
 
-The scraper job runs on a configurable interval (default: every 60 minutes)
-to keep the event database fresh without hammering source sites.
+The scraper job runs once daily at end of day (11 PM by default, configurable
+via SCRAPE_HOUR in .env) so the next day's events are ready before you wake up.
 """
 import logging
 
 from apscheduler.schedulers.background import BackgroundScheduler
-from apscheduler.triggers.interval import IntervalTrigger
+from apscheduler.triggers.cron import CronTrigger
 
 from db.models import SessionLocal
 from scrapers.aggregator import sync
@@ -37,14 +37,14 @@ def start_scheduler() -> BackgroundScheduler:
     scheduler = BackgroundScheduler(timezone=settings.timezone)
     scheduler.add_job(
         _scrape_job,
-        trigger=IntervalTrigger(minutes=settings.scrape_interval_minutes),
+        trigger=CronTrigger(hour=settings.scrape_hour, minute=0, timezone=settings.timezone),
         id="scrape_events",
-        name="Scrape all event sources",
+        name="End-of-day scrape of all event sources",
         replace_existing=True,
-        max_instances=1,  # prevent overlap if a scrape takes longer than interval
+        max_instances=1,
     )
     scheduler.start()
     logger.info(
-        f"[scheduler] started — scraping every {settings.scrape_interval_minutes} minutes"
+        f"[scheduler] started — daily scrape at {settings.scrape_hour:02d}:00 {settings.timezone}"
     )
     return scheduler

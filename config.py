@@ -17,8 +17,8 @@ class Settings(BaseSettings):
     google_credentials_file: Optional[str] = "credentials.json"
     google_token_file: Optional[str] = "token.json"
 
-    # Scheduler - how often to re-scrape (in minutes)
-    scrape_interval_minutes: int = 60
+    # Scheduler - hour of day to run the full scrape (24h, local timezone)
+    scrape_hour: int = 23  # 11 PM
 
     # City context
     city: str = "Philadelphia"
