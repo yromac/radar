@@ -18,7 +18,7 @@ from googleapiclient.errors import HttpError
 from sqlalchemy.orm import Session
 
 from db.models import Event, EventPush, User
-from calendar_push.google_calendar import SCOPES, _get_or_create_calendar
+from calendar_push.google_calendar import SCOPES
 from config import settings
 
 logger = logging.getLogger(__name__)
@@ -124,14 +124,7 @@ class UserCalendarPusher:
             db.flush()
 
         self._service = build("calendar", "v3", credentials=creds)
-
-        if self._user.google_calendar_id:
-            self._calendar_id = self._user.google_calendar_id
-        else:
-            self._calendar_id = _get_or_create_calendar(self._service)
-            self._user.google_calendar_id = self._calendar_id
-            db.add(self._user)
-            db.flush()
+        self._calendar_id = "primary"  # push directly to the user's personal calendar
 
     def push_events(self, db: Session, events: list[Event]) -> list[EventPush]:
         """

@@ -98,7 +98,6 @@ class User(Base):
     id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
     email = Column(String, nullable=False, unique=True)
     google_account_id = Column(String, unique=True, nullable=True)
-    google_calendar_id = Column(String, nullable=True)   # "Radar" calendar on their account
     google_token_json = Column(Text, nullable=True)       # Serialised OAuth token
     created_at = Column(DateTime(timezone=True), server_default=func.now())
     last_push_at = Column(DateTime(timezone=True), nullable=True)

@@ -89,7 +89,6 @@ class SyncResult(BaseModel):
 class UserOut(BaseModel):
     id: str
     email: str
-    google_calendar_id: Optional[str]
     last_push_at: Optional[datetime]
     created_at: datetime
 
