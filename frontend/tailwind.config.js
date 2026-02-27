@@ -5,14 +5,14 @@ export default {
     extend: {
       colors: {
         radar: {
-          bg:      '#080808',
-          surface: '#111111',
-          card:    '#181818',
-          border:  '#242424',
-          green:   '#00FF88',
-          dim:     '#00cc6a',
-          muted:   '#6b7280',
-          text:    '#f0f0f0',
+          bg:      '#ffffff',
+          surface: '#f5f5f5',
+          card:    '#ffffff',
+          border:  '#e5e5e5',
+          green:   '#00aa55',
+          dim:     '#008844',
+          muted:   '#737373',
+          text:    '#111111',
         },
       },
       fontFamily: {

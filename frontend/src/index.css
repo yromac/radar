@@ -17,22 +17,22 @@
   }
 
   ::selection {
-    background: #00FF8830;
-    color: #00FF88;
+    background: #00aa5520;
+    color: #008844;
   }
 
   ::-webkit-scrollbar {
     width: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #111;
+    background: #f5f5f5;
   }
   ::-webkit-scrollbar-thumb {
-    background: #333;
+    background: #d4d4d4;
     border-radius: 3px;
   }
   ::-webkit-scrollbar-thumb:hover {
-    background: #00FF88;
+    background: #00aa55;
   }
 }
 
@@ -62,8 +62,8 @@
   }
 
   .card {
-    @apply bg-radar-card border border-radar-border rounded-xl overflow-hidden
-           hover:border-radar-green/30 transition-all duration-200;
+    @apply bg-radar-card border border-radar-border rounded-xl overflow-hidden shadow-sm
+           hover:border-radar-green/50 hover:shadow-md transition-all duration-200;
   }
 
   .input {

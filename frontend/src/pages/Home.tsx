@@ -40,16 +40,16 @@ export function Home() {
           {[600, 480, 360, 240].map(d => (
             <div
               key={d}
-              className="absolute rounded-full border border-radar-green/5"
+              className="absolute rounded-full border border-radar-green/10"
               style={{ width: d, height: d }}
             />
           ))}
           {/* Sweep gradient */}
           <div
-            className="absolute rounded-full opacity-5"
+            className="absolute rounded-full opacity-10"
             style={{
               width: 600, height: 600,
-              background: 'conic-gradient(from 0deg, transparent 70%, #00FF88 100%)',
+              background: 'conic-gradient(from 0deg, transparent 70%, #00aa55 100%)',
               animation: 'sweep 8s linear infinite',
             }}
           />
