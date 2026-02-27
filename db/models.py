@@ -1,6 +1,6 @@
 from sqlalchemy import (
-    Column, String, Text, DateTime, Boolean, Float,
-    ForeignKey, Enum, create_engine, UniqueConstraint
+    Column, String, Text, DateTime, Boolean, Float, Integer,
+    ForeignKey, Enum, JSON, create_engine, UniqueConstraint
 )
 from sqlalchemy.orm import DeclarativeBase, relationship, sessionmaker
 from sqlalchemy.sql import func
@@ -89,6 +89,65 @@ class Partner(Base):
     created_at = Column(DateTime(timezone=True), server_default=func.now())
 
     events = relationship("Event", back_populates="partner")
+
+
+class User(Base):
+    """A person who has connected their Google Calendar to Radar."""
+    __tablename__ = "users"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    email = Column(String, nullable=False, unique=True)
+    google_account_id = Column(String, unique=True, nullable=True)
+    google_calendar_id = Column(String, nullable=True)   # "Radar" calendar on their account
+    google_token_json = Column(Text, nullable=True)       # Serialised OAuth token
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    last_push_at = Column(DateTime(timezone=True), nullable=True)
+
+    profile = relationship(
+        "UserProfile", back_populates="user", uselist=False, cascade="all, delete-orphan"
+    )
+    pushes = relationship("EventPush", back_populates="user", cascade="all, delete-orphan")
+
+
+class UserProfile(Base):
+    """Accumulated interest/behaviour signals for one user."""
+    __tablename__ = "user_profiles"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String, ForeignKey("users.id"), unique=True, nullable=False)
+
+    # Weighted interest per EventCategory value, e.g. {"arts": 2.0, "music": -0.5}
+    category_weights = Column(JSON, default=dict, nullable=False)
+
+    # Behavioural signal accumulators (positive = prefers, negative = avoids)
+    prefers_weekends = Column(Float, default=0.0, nullable=False)
+    prefers_evenings = Column(Float, default=0.0, nullable=False)
+    free_preference = Column(Float, default=0.0, nullable=False)
+
+    # Raw interaction counts
+    total_yes = Column(Integer, default=0, nullable=False)
+    total_no = Column(Integer, default=0, nullable=False)
+    total_maybe = Column(Integer, default=0, nullable=False)
+
+    updated_at = Column(DateTime(timezone=True), onupdate=func.now())
+
+    user = relationship("User", back_populates="profile")
+
+
+class EventPush(Base):
+    """Records each event pushed to a user and their eventual response."""
+    __tablename__ = "event_pushes"
+
+    id = Column(String, primary_key=True, default=lambda: str(uuid.uuid4()))
+    user_id = Column(String, ForeignKey("users.id"), nullable=False)
+    event_id = Column(String, ForeignKey("events.id"), nullable=False)
+    gcal_event_id = Column(String, nullable=True)         # Google Calendar event ID
+    pushed_at = Column(DateTime(timezone=True), server_default=func.now())
+    response = Column(String, nullable=True)               # "yes" | "no" | "maybe"
+    responded_at = Column(DateTime(timezone=True), nullable=True)
+
+    user = relationship("User", back_populates="pushes")
+    event = relationship("Event")
 
 
 # DB session factory

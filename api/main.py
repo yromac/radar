@@ -5,7 +5,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
 from db.models import init_db
-from api.routes import events, partners, sync
+from api.routes import events, partners, sync, users
 from config import settings
 
 
@@ -38,6 +38,7 @@ app.add_middleware(
 app.include_router(events.router)
 app.include_router(partners.router)
 app.include_router(sync.router)
+app.include_router(users.router)
 
 
 @app.get("/", tags=["health"])

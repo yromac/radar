@@ -84,3 +84,34 @@ class SyncResult(BaseModel):
     scraped: int
     created: int
     updated: int
+
+
+class UserOut(BaseModel):
+    id: str
+    email: str
+    google_calendar_id: Optional[str]
+    last_push_at: Optional[datetime]
+    created_at: datetime
+
+    model_config = {"from_attributes": True}
+
+
+class UserProfileOut(BaseModel):
+    id: str
+    user_id: str
+    category_weights: dict
+    prefers_weekends: float
+    prefers_evenings: float
+    free_preference: float
+    total_yes: int
+    total_no: int
+    total_maybe: int
+    updated_at: Optional[datetime]
+
+    model_config = {"from_attributes": True}
+
+
+class PushResult(BaseModel):
+    pushed: int
+    event_ids: list[str]
+    message: str

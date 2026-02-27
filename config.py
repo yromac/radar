@@ -24,6 +24,9 @@ class Settings(BaseSettings):
     city: str = "Philadelphia"
     timezone: str = "America/New_York"
 
+    # Base URL of this API server (used to build response links in calendar events)
+    app_base_url: str = "http://localhost:8000"
+
     # Partner API key for business submissions
     partner_api_key: Optional[str] = None
 
